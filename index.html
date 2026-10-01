@@ -188,14 +188,49 @@ details .body p:last-child{margin-bottom:0}
 .btn.ghost:hover{background:var(--cream)}
 .btnrow{display:flex;flex-wrap:wrap;gap:10px}
 
-/* toc */
-.toc{margin-top:22px}
-.toc-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
-.toc-grid a{display:block;background:var(--paper);border:1px solid var(--line);
-  border-radius:10px;padding:10px 12px;text-decoration:none}
-.toc-grid a .t{display:block;font-weight:700;color:var(--ink);font-size:13.5px}
-.toc-grid a .d{display:block;color:var(--muted);font-size:12px;margin-top:2px}
-@media(max-width:420px){.toc-grid{grid-template-columns:1fr}}
+/* compact navigation */
+.guide-nav{position:sticky;top:10px;z-index:10;margin-top:18px}
+.guide-menu{overflow:visible;margin:0;border-radius:12px;box-shadow:0 4px 20px rgba(60,42,20,.1)}
+.guide-menu>summary{padding:14px 38px 14px 16px;min-height:52px;font-size:15px}
+.guide-menu>summary .sub{margin-left:auto;font-size:11.5px;color:var(--muted)}
+.guide-menu[open]>summary{border-radius:12px 12px 0 0;background:var(--paper)}
+.menu-panel{position:absolute;top:calc(100% - 1px);left:0;right:0;max-height:min(70dvh,650px);overflow-y:auto;overscroll-behavior:contain;background:var(--paper);border:1px solid var(--line);border-radius:0 0 14px 14px;padding:8px 16px 16px;box-shadow:0 14px 26px rgba(60,42,20,.14)}
+.menu-intro{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:0 0 8px;border-bottom:1px solid var(--line)}
+.menu-intro p{font-size:12px;color:var(--muted);margin:0}
+.menu-intro button{font:inherit;font-size:12px;color:var(--bronze-deep);background:none;border:0;min-height:40px;padding:6px 10px;cursor:pointer}
+.menu-groups{display:grid;gap:0 24px}
+.menu-group{padding:13px 0;border-bottom:1px solid var(--line)}
+.menu-group:last-child{border-bottom:0;padding-bottom:0}
+.menu-group h3{font-size:14px;margin:0}
+.menu-group p{font-size:11.5px;color:var(--muted);margin:1px 0 5px}
+.menu-links{display:flex;flex-wrap:wrap;gap:0 15px}
+.menu-links a{display:inline-flex;align-items:center;min-height:40px;font-size:12.5px;font-weight:600;text-decoration:none}
+.menu-links a:hover{text-decoration:underline}
+.quick-links{display:flex;flex-wrap:wrap;gap:4px 15px;margin-top:7px}
+.quick-links a{font-size:12px;font-weight:600;display:inline-flex;align-items:center;min-height:40px;text-decoration:none}
+.quick-links a:hover{text-decoration:underline}
+.stay-times{display:flex;justify-content:center;gap:28px;padding:13px 0 0;margin:0;color:var(--muted);font-size:12px}
+.stay-times div{display:flex;gap:7px;align-items:baseline}
+.stay-times dt,.stay-times dd{margin:0}
+.stay-times dd{color:var(--ink);font-weight:700;font-size:13px}
+.mast{padding:26px 0 18px}
+.mast>img{margin-bottom:12px !important;height:44px !important}
+.mast h1{font-size:clamp(30px,8vw,38px)}
+.quick{margin-top:16px;gap:8px}
+.qcard{padding:12px 14px;border-radius:12px}
+.qval{font-size:15px}
+.qlabel{font-size:10px;margin-bottom:3px}
+.qhint{font-size:12px}
+section{margin-top:30px}
+[id]{scroll-margin-top:82px}
+summary{flex-wrap:wrap;position:relative;padding-right:36px;font-size:14.5px;gap:2px 12px}
+summary::after{position:absolute;right:17px;top:21px}
+summary .sub{font-size:11.5px}
+.pricetable li{flex-wrap:wrap;gap:4px 12px}
+.pricetable .win{flex-basis:140px}
+.steps img{content-visibility:auto}
+@media(min-width:560px){.menu-groups{grid-template-columns:1fr 1fr}.menu-group:nth-last-child(-n+2){border-bottom:0}}
+@media(max-width:359px){.wrap{padding-left:14px;padding-right:14px}.stay-times{gap:16px}.guide-menu>summary .sub{font-size:10.5px}}
 
 /* notes */
 .note{border-left:3px solid var(--bronze);background:rgba(164,118,69,.07);
@@ -221,6 +256,10 @@ footer .sig{font-family:'DM Serif Display',serif;font-size:19px;color:var(--ink)
     <h1>Guest Guide</h1>
     <p class="addr">Rivergate Apartments · 151-155 Bến Vân Đồn, District 4<br>Ho Chi Minh City</p>
   </header>
+  <dl class="stay-times" aria-label="Stay times">
+    <div><dt>Check in</dt><dd id="checkIn">4:00 pm</dd></div>
+    <div><dt>Check out</dt><dd id="checkOut">11:00 am</dd></div>
+  </dl>
 
   <div class="quick">
     <button class="qcard" data-copy="wifiPass">
@@ -240,24 +279,25 @@ footer .sig{font-family:'DM Serif Display',serif;font-size:19px;color:var(--ink)
     <a class="btn ghost" id="mapLink" href="#" target="_blank" rel="noopener">Open in Maps</a>
   </div>
 
-  <nav class="toc">
-    <p class="eyebrow">Jump to</p>
-    <div class="toc-grid">
-      <a href="#arrival"><span class="t">Arrival &amp; departure</span><span class="d">Check-in code, keys, check-out time</span></a>
-      <a href="#included"><span class="t">What's in the apartment</span><span class="d">Amenities & what's provided</span></a>
-      <a href="#rules"><span class="t">House rules</span><span class="d">Quiet hours, guests, smoking</span></a>
-      <a href="#building"><span class="t">Your building</span><span class="d">Elevator, mailbox, rubbish room</span></a>
-      <a href="#doorstep"><span class="t">Your street</span><span class="d">Right outside the door</span></a>
-      <a href="#eat"><span class="t">Eating around the city</span><span class="d">Cafes, restaurants, delivery</span></a>
-      <a href="#night"><span class="t">Saigon nights, sorted</span><span class="d">Bars & nightlife</span></a>
-      <a href="#do"><span class="t">Things to do</span><span class="d">Sights & activities</span></a>
-      <a href="#shopping"><span class="t">Shopping</span><span class="d">Malls, markets, convenience</span></a>
-      <a href="#health"><span class="t">Feeling unwell or hurt?</span><span class="d">Pharmacy & clinics nearby</span></a>
-      <a href="#fitness"><span class="t">Gyms & combat sports</span><span class="d">Gyms, Muay Thai, running</span></a>
-      <a href="#practical"><span class="t">Practical bits</span><span class="d">SIM cards, ATMs, laundry, visa</span></a>
-      <a href="#contact"><span class="t">Need anything?</span><span class="d">Message your host</span></a>
-    </div>
+  <nav class="guide-nav" aria-label="Guest guide navigation">
+    <details id="guide-menu" class="guide-menu">
+      <summary>Find something <span class="sub">Browse the guide</span></summary>
+      <div class="menu-panel">
+        <div class="menu-intro"><p>What do you need?</p><button type="button" id="close-menu" aria-label="Close guide menu">Close</button></div>
+        <div class="menu-groups">
+          <div class="menu-group"><h3>Arrival &amp; departure</h3><p>Airport, bags, check out</p><div class="menu-links"><a href="#arrival">Before you arrive</a><a href="#airport">Airport transfer</a><a href="#early-check-in">Early check in</a><a href="#late-check-out">Late check out</a><a href="#luggage">Luggage storage</a><a href="#check-out">Check out checklist</a></div></div>
+          <div class="menu-group"><h3>Your apartment</h3><p>Amenities, rules, building</p><div class="menu-links"><a href="#amenities">What’s included</a><a href="#hot-water">Hot water</a><a href="#parking">Parking</a><a href="#rubbish">Rubbish room</a><a href="#house-rules">House rules</a><a href="#lobby">Lobby &amp; lifts</a></div></div>
+          <div class="menu-group"><h3>Food &amp; coffee</h3><p>Nearby spots, delivery</p><div class="menu-links"><a href="#doorstep">Right outside</a><a href="#nearby-food">Nearby restaurants</a><a href="#delivery">Grab favourites</a><a href="#eat">All food picks</a></div></div>
+          <div class="menu-group"><h3>Explore Saigon</h3><p>Sights, shopping, nights</p><div class="menu-links"><a href="#do">Things to do</a><a href="#shopping">Shopping</a><a href="#night">Nightlife with Kae</a></div></div>
+          <div class="menu-group"><h3>Useful nearby</h3><p>Money, data, wellbeing</p><div class="menu-links"><a href="#atm">ATM</a><a href="#money">Money exchange</a><a href="#sim">SIM &amp; eSIM</a><a href="#health">Pharmacy &amp; doctor</a><a href="#fitness">Gyms &amp; fitness</a><a href="#spa">Spa &amp; massage</a><a href="#local-tips">Local tips</a></div></div>
+          <div class="menu-group"><h3>Extras &amp; services</h3><p>Cleaning, bedding, help</p><div class="menu-links"><a href="#extras">Cleaning &amp; extras</a><a href="#visa">Visa help</a><a href="#airport">Pickup &amp; fast track</a><a href="#contact">Contact your host</a></div></div>
+        </div>
+      </div>
+    </details>
   </nav>
+  <div class="quick-links" aria-label="Popular answers">
+    <a href="#check-out">Check out</a><a href="#luggage">Luggage</a><a href="#doorstep">Food nearby</a><a href="#rubbish">Rubbish</a>
+  </div>
 
   <!-- ============ ARRIVAL ============ -->
   <section id="arrival">
@@ -265,33 +305,32 @@ footer .sig{font-family:'DM Serif Display',serif;font-size:19px;color:var(--ink)
     <h2>Arrival &amp; departure</h2>
 
     <div class="card" style="border-color:var(--alert)">
-      <h3 style="color:var(--alert)">Required before you arrive</h3>
-      <p>Vietnamese law requires every guest to be registered with the local authorities and building management, and the building will not grant access without this.</p>
+      <h3 style="color:var(--alert)">Before you arrive</h3>
+      <p>We need to register everyone staying before the building can grant access.</p>
       <p><strong>Please send a photo of your passport</strong> (or Vietnamese ID) <strong>and visa</strong> to our WhatsApp before you arrive.</p>
       <div class="btnrow">
         <a class="btn" id="waLinkDocs" href="#">Send documents on WhatsApp</a>
       </div>
-      <div class="note warn">This is a legal requirement, not optional. Please send this for everyone staying, as early as you can before check in, so we can complete registration in time.</div>
-      <div class="note">Visa still processing and won't be ready in time? Let us know. We work with an agent who can help fast track it.</div>
+      <p class="registration-note">Registration is required by law. Please send documents for every guest as early as possible so we can have everything ready.</p>
+
     </div>
 
-    <div class="card">
-      <ul class="facts">
-        <li><span class="k">Check in from</span><span class="v" id="checkIn">4:00 pm</span></li>
-        <li><span class="k">Check out by</span><span class="v" id="checkOut">11:00 am</span></li>
-      </ul>
-    </div>
 
-    <details>
-      <summary>Getting here from the airport <span class="sub">25 to 40 min</span></summary>
+
+    <details id="airport">
+      <summary>Getting here from the airport <span class="sub">25 to 40 min by car</span></summary>
       <div class="body">
         <p>Grab is the cheapest option, priced up front with no negotiation. Taxi meters are fine too; stick to Vinasun or Mai Linh. Copy the Vietnamese address at the top of this page and show it to your driver.</p>
         <div class="note"><b>Immigration line moving slowly?</b> Tan Son Nhat's queues can run 60 minutes or more, especially on evening arrivals when several international flights land close together. We can arrange fast track immigration so you skip straight to a priority lane. Message us before you fly if you'd like this booked.</div>
         <div class="note"><b>Prefer a private pickup?</b> A driver will meet you right as you exit the terminal, at a designated spot with your name on a signage board, then escort you to the car. <b>500,000 VND</b> for a 7 seater, <b>1,200,000 VND</b> for a 16 seater. Message us to book before you fly.</div>
       </div>
     </details>
+    <details id="visa">
+      <summary>Visa help <span class="sub">Before you fly</span></summary>
+      <div class="body"><p>Visa still processing? Message us before you fly. We work with an agent who can help expedite the process.</p></div>
+    </details>
 
-    <details>
+    <details id="early-check-in">
       <summary>Early check in <span class="sub">Before 4pm</span></summary>
       <div class="body">
         <p>The apartment may still be in cleaning before 4pm. Earlier access is possible at these rates:</p>
@@ -305,7 +344,7 @@ footer .sig{font-family:'DM Serif Display',serif;font-size:19px;color:var(--ink)
       </div>
     </details>
 
-    <details>
+    <details id="late-check-out">
       <summary>Late check out <span class="sub">After 11am</span></summary>
       <div class="body">
         <ul class="pricetable">
@@ -314,11 +353,16 @@ footer .sig{font-family:'DM Serif Display',serif;font-size:19px;color:var(--ink)
           <li><span class="win">After 3:00 pm</span><span class="amt">Full night's rate</span></li>
         </ul>
         <div class="note">Late check-out is subject to availability and must be approved in advance, so please ask us before you plan around it.</div>
-        <div class="note">Alternatively, once you've checked out, luggage storage is available at Ca Phe Coba nearby for <b>50,000 VND per luggage + bag combo</b>, during their opening hours.</div>
+
+      <p class="note">Heading out later? <a href="#luggage">See luggage storage</a> after check out.</p>
       </div>
     </details>
+    <details id="luggage">
+      <summary>Luggage storage <span class="sub">Keep exploring</span></summary>
+      <div class="body"><p>After check out, luggage storage is available at Ca Phe Coba nearby for <b>50,000 VND per luggage + bag combo</b>, during their opening hours.</p></div>
+    </details>
 
-    <details>
+    <details id="check-out">
       <summary>Check out checklist <span class="sub">Please read</span></summary>
       <div class="body">
         <p>A quick five minutes before you leave helps our team turn the apartment around for the next guests.</p>
@@ -351,7 +395,7 @@ footer .sig{font-family:'DM Serif Display',serif;font-size:19px;color:var(--ink)
       </div>
     </details>
 
-    <details>
+    <details id="extras">
       <summary>Extras &amp; add ons <span class="sub">On request</span></summary>
       <div class="body">
         <p style="margin-top:0">Your stay already includes a clean at checkout. Everything below is a paid extra you can request if you want it, nothing here is charged automatically.</p>
@@ -375,7 +419,7 @@ footer .sig{font-family:'DM Serif Display',serif;font-size:19px;color:var(--ink)
     <p class="eyebrow">Already stocked</p>
     <h2>What's in the apartment</h2>
 
-    <details>
+    <details id="amenities">
       <summary>What's included <span class="sub">Tap to see</span></summary>
       <div class="body">
         <h3>Bathroom</h3>
@@ -390,7 +434,7 @@ footer .sig{font-family:'DM Serif Display',serif;font-size:19px;color:var(--ink)
         <h3 style="margin-top:16px">Bedroom</h3>
         <p>One spare pillow per bed. Units with a sofa bed also get a spare blanket for it.</p>
 
-        <div class="note" style="margin-top:12px">Need anything else during your stay? Message us any time. A mid-stay clean (see Extras &amp; add ons above) also returns the room to however you found it on day one.</div>
+        <div class="note" style="margin-top:12px">Need anything else during your stay? Message us any time. A <a href="#extras">mid stay clean</a> refreshes your apartment and restocks it to the way you found it on day one.</div>
       </div>
     </details>
   </section>
@@ -400,7 +444,10 @@ footer .sig{font-family:'DM Serif Display',serif;font-size:19px;color:var(--ink)
     <p class="eyebrow">Please read</p>
     <h2>House rules</h2>
 
-    <div class="card">
+    <p class="lede">Registered guests only. No smoking indoors. Quiet hours are 11pm to 7am.</p>
+    <details id="house-rules">
+      <summary>House rules &amp; fees <span class="sub">Please read</span></summary>
+      <div class="body">
       <ul class="rules">
         <li><b>Guest registration.</b> Every guest must be registered with a valid passport or ID and a valid visa. Please send photos before arrival as described above. Fines of <b>3 to 5 million VND</b> per guest apply by Vietnamese law if a guest isn't registered.</li>
         <li><b>No smoking or vaping indoors.</b> Balcony and outdoor areas only, an ashtray is provided. A cleaning fee of <b>2,000,000 VND</b> applies if you smoke inside.</li>
@@ -412,6 +459,7 @@ footer .sig{font-family:'DM Serif Display',serif;font-size:19px;color:var(--ink)
         <li><b>Lock up when you leave</b> and take your keycard with you.</li>
       </ul>
     </div>
+    </details>
   </section>
 
   <!-- ### BUILDING-SPECIFIC ### -->
@@ -419,14 +467,14 @@ footer .sig{font-family:'DM Serif Display',serif;font-size:19px;color:var(--ink)
     <p class="eyebrow">Rivergate Apartments</p>
     <h2>Your building</h2>
 
-    <details>
+    <details id="lobby">
       <summary>Lobby, lift &amp; security <span class="sub">24 hours</span></summary>
       <div class="body">
         <p>Security is staffed 24 hours at the main lobby, with CCTV throughout the building. There's a mailbox on the right as you enter the main lobby. Your unit's digital door lock code is sent in your check-in message; you won't need a physical key or keycard.</p>
       </div>
     </details>
 
-    <details>
+    <details id="parking">
       <summary>Parking <span class="sub">Bikes &amp; cars</span></summary>
       <div class="body">
         <ul class="rules">
@@ -437,12 +485,12 @@ footer .sig{font-family:'DM Serif Display',serif;font-size:19px;color:var(--ink)
       </div>
     </details>
 
-    <div class="card">
-      <h3>Hot water</h3>
-      <p>The hot water switch is on the wall just outside the bathroom door. If it's off when you arrive, turn it on and give it a couple of minutes to heat up before you shower.</p>
-    </div>
+    <details id="hot-water">
+      <summary>Hot water <span class="sub">Wall switch</span></summary>
+      <div class="body"><p>The hot water switch is on the wall just outside the bathroom door. If it's off when you arrive, turn it on and give it a couple of minutes to heat up before you shower.</p></div>
+    </details>
 
-    <details open>
+    <details id="rubbish">
       <summary>Rubbish &amp; recycling <span class="sub">Rác thải</span></summary>
       <div class="body">
         <p>Usually down the hallway on your floor, but the exact spot is confirmed in your check-in message since it varies by unit. Please don't leave bags outside the apartment door; it attracts insects in the heat.</p>
@@ -465,40 +513,40 @@ footer .sig{font-family:'DM Serif Display',serif;font-size:19px;color:var(--ink)
         <p>You're on the riverside, a short bridge away from District 1. The lobby itself has a small row of shops built in.</p>
       </li>
       <li class="stop">
-        <div class="mins"><b>0</b><span>Min</span></div>
+        <div class="mins"><b>0</b><span>Walk</span></div>
         <h3><a href="https://www.google.com/maps/search/?api=1&query=Ca%20Phe%20Coba%2C%20151-155%20B%E1%BA%BFn%20V%C3%A2n%20%C4%90%E1%BB%93n%2C%20District%204%2C%20Ho%20Chi%20Minh%20City" target="_blank" rel="noopener">Ca Phe Coba</a></h3>
         <p class="dir">Right downstairs</p>
-        <p>Our favourite is the xôi gà chiên, sticky rice with fried chicken. This is also where luggage storage is available after check-out, see Arrival &amp; departure above.</p>
+        <p>Our favourite is the xôi gà chiên, sticky rice with fried chicken. This is also where luggage storage is available after check-out, <a href="#luggage">See luggage storage</a>.</p>
       </li>
       <li class="stop">
-        <div class="mins"><b>0</b><span>Min</span></div>
+        <div class="mins"><b>0</b><span>Walk</span></div>
         <h3><a href="https://www.google.com/maps/search/?api=1&query=Rivergate%20Apartments%2C%20151-155%20B%E1%BA%BFn%20V%C3%A2n%20%C4%90%E1%BB%93n%2C%20District%204%2C%20Ho%20Chi%20Minh%20City" target="_blank" rel="noopener">7-Eleven, GS25 &amp; WINMart</a></h3>
         <p class="dir">Right in the Rivergate lobby</p>
         <p>Three convenience stores and a small supermarket built into the building itself, plus a pharmacy. Everything you need for a quick top up without leaving the building.</p>
         <span class="hrs">Open 24 hours (WINMart shorter hours)</span>
       </li>
       <li class="stop">
-        <div class="mins"><b>3</b><span>Min</span></div>
+        <div class="mins"><b>3</b><span>Walk</span></div>
         <h3><a href="https://www.google.com/maps/search/?api=1&query=X%C3%B3m%20Chi%E1%BA%BFu%20Market%2C%20District%204%2C%20Ho%20Chi%20Minh%20City" target="_blank" rel="noopener">Xóm Chiếu Market</a></h3>
         <p class="dir">Along Bến Vân Đồn</p>
         <p>Local wet market and street food stalls, good for cheap, authentic Vietnamese breakfast and produce. Cash only, arrive in the morning for the best selection.</p>
         <span class="hrs">Busiest early morning</span>
       </li>
       <li class="stop">
-        <div class="mins"><b>5</b><span>Min</span></div>
+        <div class="mins"><b>5</b><span>Walk</span></div>
         <h3><a href="https://www.google.com/maps/search/?api=1&query=V%C4%A9nh%20Kh%C3%A1nh%20Street%2C%20District%204%2C%20Ho%20Chi%20Minh%20City" target="_blank" rel="noopener">Vinh Khánh Food Street</a></h3>
         <p class="dir">Vĩnh Khánh, District 4</p>
         <p>Famous seafood street: snails, grilled prawns, crab, all cooked at plastic-stool sidewalk stalls. Loud, cheap and one of the best food experiences in the city after dark.</p>
         <span class="hrs">Liveliest from 6pm</span>
       </li>
       <li class="stop">
-        <div class="mins"><b>5</b><span>Min</span></div>
+        <div class="mins"><b>5</b><span>Walk</span></div>
         <h3>Riverside walk</h3>
         <p class="dir">Along the Ben Nghe Canal</p>
         <p>A quieter stretch along the water with views back across to District 1. Good for an evening walk once the heat drops off.</p>
       </li>
       <li class="stop">
-        <div class="mins"><b>18</b><span>Min</span></div>
+        <div class="mins"><b>18</b><span>Walk</span></div>
         <h3><a href="https://www.google.com/maps/search/?api=1&query=B%C3%B9i%20Vi%E1%BB%87n%20Walking%20Street%2C%20Ho%20Chi%20Minh%20City" target="_blank" rel="noopener">Bùi Viện walking street</a></h3>
         <p class="dir">Cross the bridge into District 1</p>
         <p>The backpacker nightlife strip: loud, neon, cheap beer, pedestrianised in the evenings. Walkable, though most guests grab a Grab back late at night.</p>
@@ -511,26 +559,10 @@ footer .sig{font-family:'DM Serif Display',serif;font-size:19px;color:var(--ink)
   <!-- ============ EATING ============ -->
   <section id="eat">
     <p class="eyebrow">Worth the trip</p>
-    <h2>Eating around the city</h2>
+    <h2>Food &amp; coffee</h2>
     <p class="lede">Grouped by area, with travel time from the apartment.</p>
 
-    <details>
-      <summary>Brunch &amp; cafes <span class="sub">6 to 14 min taxi</span></summary>
-      <div class="body">
-        <div class="place">
-          <span class="nm"><a href="https://www.google.com/maps/search/?api=1&query=SOKO%20Cake%20Bake%20%26%20Brunch%2C%2027A%20Nguy%E1%BB%85n%20Trung%20Tr%E1%BB%B1c%2C%20B%E1%BA%BFn%20Th%C3%A0nh%2C%20Ho%20Chi%20Minh%20City" target="_blank" rel="noopener">SOKO Cake Bake &amp; Brunch</a></span>
-          <span class="loc">27A Nguyễn Trung Trực, Bến Thành · 6 min taxi</span>
-          <p class="desc">The brunch spot guests come back for. Fluffy pancake stacks, a long menu of Western and Vietnamese fusion plates, beautiful pastries and very photogenic drinks. Open 8am to 10pm. Busy at weekends, so go before 10am if you want a quiet table.</p>
-        </div>
-        <div class="place">
-          <span class="nm"><a href="https://www.google.com/maps/search/?api=1&query=Oasis%20Cafe%2C%20176%2F1b%20L%C3%AA%20V%C4%83n%20S%E1%BB%B9%2C%20Ph%C3%BA%20Nhu%E1%BA%ADn%2C%20Ho%20Chi%20Minh%20City" target="_blank" rel="noopener">Oasis Café</a></span>
-          <span class="loc">176/1b Lê Văn Sỹ, Phú Nhuận · 14 min taxi</span>
-          <p class="desc">The famous koi fish café. Order a drink and the koi will swarm right up to your table looking for food pellets. A proper novelty and a nice spot to sit regardless. Further out than the rest of this list, worth the trip once.</p>
-        </div>
-      </div>
-    </details>
-
-    <details>
+    <details id="nearby-food">
       <summary>Right in your neighbourhood <span class="sub">3 to 15 min walk</span></summary>
       <div class="body">
         <div class="place">
@@ -550,6 +582,80 @@ footer .sig{font-family:'DM Serif Display',serif;font-size:19px;color:var(--ink)
         </div>
       </div>
     </details>
+
+    <details id="delivery">
+      <summary>Grab delivery favourites <span class="sub">Our regular orders</span></summary>
+      <div class="body">
+        <div class="place">
+          <span class="nm"><a href="https://www.google.com/maps/search/?api=1&query=Hey%20Pelo%2C%2060%20Tr%E1%BA%A7n%20Kh%E1%BA%AFc%20Ch%C3%A2n%2C%20T%C3%A2n%20%C4%90%E1%BB%8Bnh%2C%20District%201%2C%20Ho%20Chi%20Minh%20City" target="_blank" rel="noopener">Hey Pelo</a></span>
+          <span class="loc">60 Trần Khắc Chân, Tân Định, District 1</span>
+          <p class="desc">French style tacos, wrapped burrito big and stuffed with fries and sauce. Filling and a bit different from the usual delivery order.</p>
+        </div>
+        <div class="place">
+          <span class="nm"><a href="https://www.google.com/maps/search/?api=1&query=Bonchon%20Chicken%2C%2043%20L%C3%BD%20T%E1%BB%B1%20Tr%E1%BB%8Dng%2C%20District%201%2C%20Ho%20Chi%20Minh%20City" target="_blank" rel="noopener">Bonchon</a></span>
+          <span class="loc">43 Lý Tự Trọng, District 1</span>
+          <p class="desc">Korean fried chicken, double fried and glazed in soy garlic or spicy sauce. Get the wings.</p>
+        </div>
+        <div class="place">
+          <span class="nm"><a href="https://www.google.com/maps/search/?api=1&query=Chickita%20Flame%20Grilled%20Chicken%2C%2082%20H%E1%BB%93%20T%C3%B9ng%20M%E1%BA%ADu%2C%20Ho%20Chi%20Minh%20City" target="_blank" rel="noopener">Chickita</a></span>
+          <span class="loc">82 Hồ Tùng Mậu, District 1</span>
+          <p class="desc">Flame grilled peri-peri chicken, about as close as Saigon gets to Nando's. Order it with the rice and slaw sides.</p>
+        </div>
+        <div class="place">
+          <span class="nm"><a href="https://www.google.com/maps/search/?api=1&query=Ducky%27s%20Smash%20Burger%2C%20Thao%20Dien%2C%20Ho%20Chi%20Minh%20City" target="_blank" rel="noopener">Ducky's Smash Burger</a></span>
+          <span class="loc">Thảo Điền</span>
+          <p class="desc">Thin, crispy smash patties stacked high with melted cheese. A favourite for a late night order.</p>
+        </div>
+        <div class="place">
+          <span class="nm"><a href="https://www.google.com/maps/search/?api=1&query=Bagel%20Brothers%2C%2097A%20Ph%E1%BA%A1m%20Ng%C5%A9%20L%C3%A3o%2C%20District%201%2C%20Ho%20Chi%20Minh%20City" target="_blank" rel="noopener">Bagel Brothers</a></span>
+          <span class="loc">97A Phạm Ngũ Lão, District 1</span>
+          <p class="desc">Fresh baked bagels. The bacon, egg, jalapeño and cheese is the one to get, a solid breakfast delivery order.</p>
+        </div>
+        <div class="place">
+          <span class="nm"><a href="https://www.google.com/maps/search/?api=1&query=Mad%20Roosta%20Burgers%20%26%20Grill%2C%2095%20Hai%20B%C3%A0%20Tr%C6%B0ng%2C%20District%201%2C%20Ho%20Chi%20Minh%20City" target="_blank" rel="noopener">Mad Rooster Burgers</a></span>
+          <span class="loc">95 Hai Bà Trưng, District 1</span>
+          <p class="desc">Smash burgers and fried chicken. Noticeably better fresh off the grill, so worth dining in rather than ordering delivery if you can.</p>
+        </div>
+        <div class="place">
+          <span class="nm"><a href="https://www.google.com/maps/search/?api=1&query=Sandwich%20by%20Dulce%2C%20382%2F15%20Nguy%E1%BB%85n%20Th%E1%BB%8B%20Minh%20Khai%2C%20District%203%2C%20Ho%20Chi%20Minh%20City" target="_blank" rel="noopener">Sandwich by Dulce</a></span>
+          <span class="loc">382/15 Nguyễn Thị Minh Khai, District 3</span>
+          <p class="desc">Tiger bread sandwiches, properly stuffed with world inspired fillings. A step up from the usual banh mi run.</p>
+        </div>
+        <div class="place">
+          <span class="nm"><a href="https://www.google.com/maps/search/?api=1&query=Jumpo%20Kebab%2C%2031%20C%C3%A1ch%20M%E1%BA%A1ng%20Th%C3%A1ng%20T%C3%A1m%2C%20District%201%2C%20Ho%20Chi%20Minh%20City" target="_blank" rel="noopener">Jumpo Kebab</a></span>
+          <span class="loc">31 Cách Mạng Tháng Tám, District 1</span>
+          <p class="desc">About as close as you'll get here to an Australian style kebab box, generous and messy in the best way.</p>
+        </div>
+        <div class="place">
+          <span class="nm"><a href="https://www.google.com/maps/search/?api=1&query=Soumaki%2C%2042%20L%C3%BD%20T%E1%BB%B1%20Tr%E1%BB%8Dng%2C%20District%201%2C%20Ho%20Chi%20Minh%20City" target="_blank" rel="noopener">Soumaki</a></span>
+          <span class="loc">42 Lý Tự Trọng, District 1</span>
+          <p class="desc">Customisable healthy bowls, grilled meats, salads and rice that still taste like a proper meal. Good order when you want something lighter.</p>
+        </div>
+        <div class="place">
+          <span class="nm"><a href="https://www.google.com/maps/search/?api=1&query=Poke%20Saigon%2C%2042%20Bis%20L%C3%BD%20T%E1%BB%B1%20Tr%E1%BB%8Dng%2C%20District%201%2C%20Ho%20Chi%20Minh%20City" target="_blank" rel="noopener">Poke Saigon</a></span>
+          <span class="loc">42 Bis Lý Tự Trọng, District 1</span>
+          <p class="desc">Right next door to Soumaki. Hawaiian style poke bowls, sashimi grade fish over rice with fresh veg and a proper sauce. Another good lighter option.</p>
+        </div>
+      </div>
+    </details>
+
+    <details>
+      <summary>Brunch &amp; cafes <span class="sub">6 to 14 min taxi</span></summary>
+      <div class="body">
+        <div class="place">
+          <span class="nm"><a href="https://www.google.com/maps/search/?api=1&query=SOKO%20Cake%20Bake%20%26%20Brunch%2C%2027A%20Nguy%E1%BB%85n%20Trung%20Tr%E1%BB%B1c%2C%20B%E1%BA%BFn%20Th%C3%A0nh%2C%20Ho%20Chi%20Minh%20City" target="_blank" rel="noopener">SOKO Cake Bake &amp; Brunch</a></span>
+          <span class="loc">27A Nguyễn Trung Trực, Bến Thành · 6 min taxi</span>
+          <p class="desc">The brunch spot guests come back for. Fluffy pancake stacks, a long menu of Western and Vietnamese fusion plates, beautiful pastries and very photogenic drinks. Open 8am to 10pm. Busy at weekends, so go before 10am if you want a quiet table.</p>
+        </div>
+        <div class="place">
+          <span class="nm"><a href="https://www.google.com/maps/search/?api=1&query=Oasis%20Cafe%2C%20176%2F1b%20L%C3%AA%20V%C4%83n%20S%E1%BB%B9%2C%20Ph%C3%BA%20Nhu%E1%BA%ADn%2C%20Ho%20Chi%20Minh%20City" target="_blank" rel="noopener">Oasis Café</a></span>
+          <span class="loc">176/1b Lê Văn Sỹ, Phú Nhuận · 14 min taxi</span>
+          <p class="desc">The famous koi fish café. Order a drink and the koi will swarm right up to your table looking for food pellets. A proper novelty and a nice spot to sit regardless. Further out than the rest of this list, worth the trip once.</p>
+        </div>
+      </div>
+    </details>
+
+
 
     <details>
       <summary>District 1 favourites <span class="sub">5 to 7 min taxi</span></summary>
@@ -680,61 +786,7 @@ footer .sig{font-family:'DM Serif Display',serif;font-size:19px;color:var(--ink)
       </div>
     </details>
 
-    <details>
-      <summary>Grab delivery favourites <span class="sub">Our regular orders</span></summary>
-      <div class="body">
-        <div class="place">
-          <span class="nm"><a href="https://www.google.com/maps/search/?api=1&query=Hey%20Pelo%2C%2060%20Tr%E1%BA%A7n%20Kh%E1%BA%AFc%20Ch%C3%A2n%2C%20T%C3%A2n%20%C4%90%E1%BB%8Bnh%2C%20District%201%2C%20Ho%20Chi%20Minh%20City" target="_blank" rel="noopener">Hey Pelo</a></span>
-          <span class="loc">60 Trần Khắc Chân, Tân Định, District 1</span>
-          <p class="desc">French style tacos, wrapped burrito big and stuffed with fries and sauce. Filling and a bit different from the usual delivery order.</p>
-        </div>
-        <div class="place">
-          <span class="nm"><a href="https://www.google.com/maps/search/?api=1&query=Bonchon%20Chicken%2C%2043%20L%C3%BD%20T%E1%BB%B1%20Tr%E1%BB%8Dng%2C%20District%201%2C%20Ho%20Chi%20Minh%20City" target="_blank" rel="noopener">Bonchon</a></span>
-          <span class="loc">43 Lý Tự Trọng, District 1</span>
-          <p class="desc">Korean fried chicken, double fried and glazed in soy garlic or spicy sauce. Get the wings.</p>
-        </div>
-        <div class="place">
-          <span class="nm"><a href="https://www.google.com/maps/search/?api=1&query=Chickita%20Flame%20Grilled%20Chicken%2C%2082%20H%E1%BB%93%20T%C3%B9ng%20M%E1%BA%ADu%2C%20Ho%20Chi%20Minh%20City" target="_blank" rel="noopener">Chickita</a></span>
-          <span class="loc">82 Hồ Tùng Mậu, District 1</span>
-          <p class="desc">Flame grilled peri-peri chicken, about as close as Saigon gets to Nando's. Order it with the rice and slaw sides.</p>
-        </div>
-        <div class="place">
-          <span class="nm"><a href="https://www.google.com/maps/search/?api=1&query=Ducky%27s%20Smash%20Burger%2C%20Thao%20Dien%2C%20Ho%20Chi%20Minh%20City" target="_blank" rel="noopener">Ducky's Smash Burger</a></span>
-          <span class="loc">Thảo Điền</span>
-          <p class="desc">Thin, crispy smash patties stacked high with melted cheese. A favourite for a late night order.</p>
-        </div>
-        <div class="place">
-          <span class="nm"><a href="https://www.google.com/maps/search/?api=1&query=Bagel%20Brothers%2C%2097A%20Ph%E1%BA%A1m%20Ng%C5%A9%20L%C3%A3o%2C%20District%201%2C%20Ho%20Chi%20Minh%20City" target="_blank" rel="noopener">Bagel Brothers</a></span>
-          <span class="loc">97A Phạm Ngũ Lão, District 1</span>
-          <p class="desc">Fresh baked bagels. The bacon, egg, jalapeño and cheese is the one to get, a solid breakfast delivery order.</p>
-        </div>
-        <div class="place">
-          <span class="nm"><a href="https://www.google.com/maps/search/?api=1&query=Mad%20Roosta%20Burgers%20%26%20Grill%2C%2095%20Hai%20B%C3%A0%20Tr%C6%B0ng%2C%20District%201%2C%20Ho%20Chi%20Minh%20City" target="_blank" rel="noopener">Mad Rooster Burgers</a></span>
-          <span class="loc">95 Hai Bà Trưng, District 1</span>
-          <p class="desc">Smash burgers and fried chicken. Noticeably better fresh off the grill, so worth dining in rather than ordering delivery if you can.</p>
-        </div>
-        <div class="place">
-          <span class="nm"><a href="https://www.google.com/maps/search/?api=1&query=Sandwich%20by%20Dulce%2C%20382%2F15%20Nguy%E1%BB%85n%20Th%E1%BB%8B%20Minh%20Khai%2C%20District%203%2C%20Ho%20Chi%20Minh%20City" target="_blank" rel="noopener">Sandwich by Dulce</a></span>
-          <span class="loc">382/15 Nguyễn Thị Minh Khai, District 3</span>
-          <p class="desc">Tiger bread sandwiches, properly stuffed with world inspired fillings. A step up from the usual banh mi run.</p>
-        </div>
-        <div class="place">
-          <span class="nm"><a href="https://www.google.com/maps/search/?api=1&query=Jumpo%20Kebab%2C%2031%20C%C3%A1ch%20M%E1%BA%A1ng%20Th%C3%A1ng%20T%C3%A1m%2C%20District%201%2C%20Ho%20Chi%20Minh%20City" target="_blank" rel="noopener">Jumpo Kebab</a></span>
-          <span class="loc">31 Cách Mạng Tháng Tám, District 1</span>
-          <p class="desc">About as close as you'll get here to an Australian style kebab box, generous and messy in the best way.</p>
-        </div>
-        <div class="place">
-          <span class="nm"><a href="https://www.google.com/maps/search/?api=1&query=Soumaki%2C%2042%20L%C3%BD%20T%E1%BB%B1%20Tr%E1%BB%8Dng%2C%20District%201%2C%20Ho%20Chi%20Minh%20City" target="_blank" rel="noopener">Soumaki</a></span>
-          <span class="loc">42 Lý Tự Trọng, District 1</span>
-          <p class="desc">Customisable healthy bowls, grilled meats, salads and rice that still taste like a proper meal. Good order when you want something lighter.</p>
-        </div>
-        <div class="place">
-          <span class="nm"><a href="https://www.google.com/maps/search/?api=1&query=Poke%20Saigon%2C%2042%20Bis%20L%C3%BD%20T%E1%BB%B1%20Tr%E1%BB%8Dng%2C%20District%201%2C%20Ho%20Chi%20Minh%20City" target="_blank" rel="noopener">Poke Saigon</a></span>
-          <span class="loc">42 Bis Lý Tự Trọng, District 1</span>
-          <p class="desc">Right next door to Soumaki. Hawaiian style poke bowls, sashimi grade fish over rice with fresh veg and a proper sauce. Another good lighter option.</p>
-        </div>
-      </div>
-    </details>
+
 
     <details>
       <summary><a href="https://www.google.com/maps/search/?api=1&query=Vincom%20Center%20%C4%90%E1%BB%93ng%20Kh%E1%BB%9Fi%2C%2072%20L%C3%AA%20Th%C3%A1nh%20T%C3%B4n%2C%20District%201%2C%20Ho%20Chi%20Minh%20City" target="_blank" rel="noopener">Vincom Center food court</a> <span class="sub">8 min taxi</span></summary>
@@ -779,52 +831,52 @@ footer .sig{font-family:'DM Serif Display',serif;font-size:19px;color:var(--ink)
     <p class="lede">Most of these are within 15 minutes of the apartment.</p>
 
     <details>
-      <summary><a href="https://www.google.com/maps/search/?api=1&query=Saigon%20Skydeck%2C%20Ho%20Chi%20Minh%20City" target="_blank" rel="noopener">Saigon Skydeck</a> <span class="sub">6 min</span></summary>
+      <summary><a href="https://www.google.com/maps/search/?api=1&query=Saigon%20Skydeck%2C%20Ho%20Chi%20Minh%20City" target="_blank" rel="noopener">Saigon Skydeck</a> <span class="sub">6 min by car</span></summary>
       <div class="body"><p>Bitexco Tower, 49th floor. Not the city's tallest deck, but the best positioned: you look straight down onto Ben Thanh Market, the Saigon River bend and the old colonial quarter. Go around 5:30pm for sunset into city lights. Tickets around 240,000đ, or skip the fee entirely by having a drink at EON Heli Bar on floor 52.</p></div>
     </details>
 
     <details>
-      <summary><a href="https://www.google.com/maps/search/?api=1&query=Independence%20Palace%2C%20Ho%20Chi%20Minh%20City" target="_blank" rel="noopener">Independence Palace</a> <span class="sub">8 min</span></summary>
+      <summary><a href="https://www.google.com/maps/search/?api=1&query=Independence%20Palace%2C%20Ho%20Chi%20Minh%20City" target="_blank" rel="noopener">Independence Palace</a> <span class="sub">8 min by car</span></summary>
       <div class="body"><p>The site where the war ended in 1975, tanks and all. 1960s architecture preserved almost untouched, including the underground command bunker. Ticket counter 8am to 3:30pm, palace closes 4:30 to 5pm. Around 40,000đ, or 65,000đ with the exhibition. Allow 1.5 to 2 hours and go in the morning to beat the heat.</p></div>
     </details>
 
     <details>
-      <summary><a href="https://www.google.com/maps/search/?api=1&query=Saigon%20Central%20Post%20Office%2C%20Ho%20Chi%20Minh%20City" target="_blank" rel="noopener">Saigon Central Post Office</a> <span class="sub">Free · 9 min</span></summary>
+      <summary><a href="https://www.google.com/maps/search/?api=1&query=Saigon%20Central%20Post%20Office%2C%20Ho%20Chi%20Minh%20City" target="_blank" rel="noopener">Saigon Central Post Office</a> <span class="sub">Free · 9 min by car</span></summary>
       <div class="body"><p>French colonial post office from 1891, still a working post office rather than a museum piece. High vaulted hall, old hand painted maps on the walls, an easy 15 minute stop. Open 7:30am to 6pm, Sunday until 5pm. Buy a postcard at the counter and send it home; it genuinely still works. Early morning or just before closing avoids the tour groups.</p></div>
     </details>
 
     <details>
-      <summary><a href="https://www.google.com/maps/search/?api=1&query=Notre-Dame%20Cathedral%20Basilica%20Saigon%2C%20Ho%20Chi%20Minh%20City" target="_blank" rel="noopener">Notre-Dame Cathedral Basilica</a> <span class="sub">Free · 9 min</span></summary>
+      <summary><a href="https://www.google.com/maps/search/?api=1&query=Notre-Dame%20Cathedral%20Basilica%20Saigon%2C%20Ho%20Chi%20Minh%20City" target="_blank" rel="noopener">Notre-Dame Cathedral Basilica</a> <span class="sub">Free · 9 min by car</span></summary>
       <div class="body"><p>Red brick French Gothic landmark from the 1880s, directly across from the Post Office. Under restoration until around 2027, so interior access is limited, but the square and exterior are fully open. Best light before 9am or after 4pm. Sunday 9:30am Mass is held in English.</p></div>
     </details>
 
     <details>
-      <summary><a href="https://www.google.com/maps/search/?api=1&query=War%20Remnants%20Museum%2C%20Ho%20Chi%20Minh%20City" target="_blank" rel="noopener">War Remnants Museum</a> <span class="sub">8 min</span></summary>
+      <summary><a href="https://www.google.com/maps/search/?api=1&query=War%20Remnants%20Museum%2C%20Ho%20Chi%20Minh%20City" target="_blank" rel="noopener">War Remnants Museum</a> <span class="sub">8 min by car</span></summary>
       <div class="body"><p>28 Võ Văn Tần, District 3. Photographs, military hardware and personal artefacts documenting the Vietnam War from the Vietnamese side. Powerful and heavy, the Agent Orange exhibit especially, so it is not for everyone, but widely considered essential. Open 7:30am to 5:30pm, last entry 4pm, around 40,000đ. Budget 1.5 to 2 hours.</p></div>
     </details>
 
     <details>
-      <summary><a href="https://www.google.com/maps/search/?api=1&query=Ben%20Thanh%20Market%2C%20Ho%20Chi%20Minh%20City" target="_blank" rel="noopener">Ben Thanh Market</a> <span class="sub">6 min</span></summary>
+      <summary><a href="https://www.google.com/maps/search/?api=1&query=Ben%20Thanh%20Market%2C%20Ho%20Chi%20Minh%20City" target="_blank" rel="noopener">Ben Thanh Market</a> <span class="sub">6 min by car</span></summary>
       <div class="body"><p>The city's oldest and most central market: souvenirs, clothing, produce and a food court with cheap, solid Vietnamese eating. Open 6am to 6pm, with street food stalls outside running late. Bargain hard, start at about half the asking price. Busiest and hottest 10am to 3pm.</p></div>
     </details>
 
     <details>
-      <summary><a href="https://www.google.com/maps/search/?api=1&query=Ho%20Chi%20Minh%20City%20Fine%20Arts%20Museum" target="_blank" rel="noopener">Fine Arts Museum</a> <span class="sub">5 min</span></summary>
+      <summary><a href="https://www.google.com/maps/search/?api=1&query=Ho%20Chi%20Minh%20City%20Fine%20Arts%20Museum" target="_blank" rel="noopener">Fine Arts Museum</a> <span class="sub">5 min by car</span></summary>
       <div class="body"><p>97A Phó Đức Chính, one of the closest attractions to the apartment. A wealthy Chinese-Vietnamese family's 1929 mansion turned art museum, and the yellow and green colonial building is honestly the main event. Champa sculpture through to modern lacquer painting. No air conditioning, so go morning or late afternoon. Daily 8am to 5pm, around 30,000đ.</p></div>
     </details>
 
     <details>
-      <summary><a href="https://www.google.com/maps/search/?api=1&query=Ho%20Chi%20Minh%20City%20Museum" target="_blank" rel="noopener">Ho Chi Minh City Museum</a> <span class="sub">8 min</span></summary>
+      <summary><a href="https://www.google.com/maps/search/?api=1&query=Ho%20Chi%20Minh%20City%20Museum" target="_blank" rel="noopener">Ho Chi Minh City Museum</a> <span class="sub">8 min by car</span></summary>
       <div class="body"><p>65 Lý Tự Trọng, the former Gia Long Palace. French neoclassical building covering the city's history from the colonial era through reunification, with a preserved wartime bunker underneath. Quieter and far less touristed than Independence Palace. Daily 8am to 5pm, around 30,000đ, about an hour.</p></div>
     </details>
 
     <details>
-      <summary><a href="https://www.google.com/maps/search/?api=1&query=Saigon%20Opera%20House%2C%20Ho%20Chi%20Minh%20City" target="_blank" rel="noopener">Saigon Opera House</a> <span class="sub">Exterior · 7 min</span></summary>
+      <summary><a href="https://www.google.com/maps/search/?api=1&query=Saigon%20Opera%20House%2C%20Ho%20Chi%20Minh%20City" target="_blank" rel="noopener">Saigon Opera House</a> <span class="sub">Exterior · 7 min by car</span></summary>
       <div class="body"><p>7 Lam Sơn Square. French colonial theatre from 1900, built to echo the Petit Palais in Paris, and one of the city's most photographed buildings, especially lit up at night. No general public access; the interior is only seen by attending a performance. The AO Show, acrobatics set to Vietnamese village life, runs most evenings from around 800,000đ.</p></div>
     </details>
 
     <details>
-      <summary><a href="https://www.google.com/maps/search/?api=1&query=Jade%20Emperor%20Pagoda%2C%20Ho%20Chi%20Minh%20City" target="_blank" rel="noopener">Jade Emperor Pagoda</a> <span class="sub">Free · 11 min</span></summary>
+      <summary><a href="https://www.google.com/maps/search/?api=1&query=Jade%20Emperor%20Pagoda%2C%20Ho%20Chi%20Minh%20City" target="_blank" rel="noopener">Jade Emperor Pagoda</a> <span class="sub">Free · 11 min by car</span></summary>
       <div class="body"><p>73 Mai Thị Lựu, Đa Kao. A 1909 Taoist temple thick with incense smoke, intricate carvings and a turtle pond out the back; a completely different atmosphere from the French colonial buildings elsewhere on this list. Open around 7am to 6pm, free, donations welcome. Dress modestly, shoulders and knees covered.</p></div>
     </details>
 
@@ -875,62 +927,62 @@ footer .sig{font-family:'DM Serif Display',serif;font-size:19px;color:var(--ink)
     </details>
 
     <details>
-      <summary>Malls &amp; department stores <span class="sub">6 to 16 min</span></summary>
+      <summary>Malls &amp; department stores <span class="sub">6 to 16 min by car</span></summary>
       <div class="body">
         <div class="place">
           <span class="nm"><a href="https://www.google.com/maps/search/?api=1&query=Saigon%20Centre%20%26%20Takashimaya%2C%2065%20L%C3%AA%20L%E1%BB%A3i%2C%20District%201%2C%20Ho%20Chi%20Minh%20City" target="_blank" rel="noopener">Saigon Centre &amp; Takashimaya</a></span>
-          <span class="loc">65 Lê Lợi, District 1 · 6 min</span>
+          <span class="loc">65 Lê Lợi, District 1 · 6 min by car</span>
           <p class="desc">The closest quality mall. Japanese department store, international brands, an excellent basement food hall, and a free rooftop garden on level 6 with a skyline view.</p>
         </div>
         <div class="place">
           <span class="nm"><a href="https://www.google.com/maps/search/?api=1&query=Vincom%20Center%20%C4%90%E1%BB%93ng%20Kh%E1%BB%9Fi%2C%2072%20L%C3%AA%20Th%C3%A1nh%20T%C3%B4n%2C%20District%201%2C%20Ho%20Chi%20Minh%20City" target="_blank" rel="noopener">Vincom Center Đồng Khởi</a></span>
-          <span class="loc">72 Lê Thánh Tôn, District 1 · 8 min</span>
+          <span class="loc">72 Lê Thánh Tôn, District 1 · 8 min by car</span>
           <p class="desc">Cinema, arcade, big food court on B3 and The New Playground streetwear floors below. The most useful all rounder in the centre.</p>
         </div>
         <div class="place">
           <span class="nm"><a href="https://www.google.com/maps/search/?api=1&query=Thiso%20Mall%20Sala%2C%2010%20Mai%20Ch%C3%AD%20Th%E1%BB%8D%2C%20Th%E1%BB%A7%20%C4%90%E1%BB%A9c%2C%20Ho%20Chi%20Minh%20City" target="_blank" rel="noopener">Thiso Mall Sala</a></span>
-          <span class="loc">10 Mai Chí Thọ, Thủ Đức · 9 min</span>
+          <span class="loc">10 Mai Chí Thọ, Thủ Đức · 9 min by car</span>
           <p class="desc">Newer, calmer and noticeably more upmarket than the District 1 malls, with barely any tourists. Emart supermarket on the ground floor, a cinema, and a good spread of restaurants upstairs. Worth the trip if you want quality without the crowds. Open 10am to 10pm.</p>
         </div>
         <div class="place">
           <span class="nm"><a href="https://www.google.com/maps/search/?api=1&query=Vincom%20Mega%20Mall%20Th%E1%BA%A3o%20%C4%90i%E1%BB%81n%2C%20161%20V%C3%B5%20Nguy%C3%AAn%20Gi%C3%A1p%2C%20Th%E1%BB%A7%20%C4%90%E1%BB%A9c%2C%20Ho%20Chi%20Minh%20City" target="_blank" rel="noopener">Vincom Mega Mall Thảo Điền</a></span>
-          <span class="loc">161 Võ Nguyên Giáp, Thủ Đức · 16 min</span>
+          <span class="loc">161 Võ Nguyên Giáp, Thủ Đức · 16 min by car</span>
           <p class="desc">In the expat neighbourhood across the river, with brands you won't find in the city centre, a large supermarket downstairs and two floors of restaurants at the top. Right by the metro station.</p>
         </div>
         <div class="place">
           <span class="nm"><a href="https://www.google.com/maps/search/?api=1&query=S%C3%A0i%20G%C3%B2n%20Square%2C%2077%20Nam%20K%E1%BB%B3%20Kh%E1%BB%9Fi%20Ngh%C4%A9a%2C%20District%201%2C%20Ho%20Chi%20Minh%20City" target="_blank" rel="noopener">Sài Gòn Square</a></span>
-          <span class="loc">77 Nam Kỳ Khởi Nghĩa, District 1 · 6 min</span>
+          <span class="loc">77 Nam Kỳ Khởi Nghĩa, District 1 · 6 min by car</span>
           <p class="desc">The air conditioned bargaining market. Clothing, bags, sportswear. Start at around 30 to 40% of the asking price and be prepared to walk away.</p>
         </div>
         <div class="place">
           <span class="nm"><a href="https://www.google.com/maps/search/?api=1&query=Crescent%20Mall%2C%20District%207%2C%20Ho%20Chi%20Minh%20City" target="_blank" rel="noopener">Crescent Mall</a></span>
-          <span class="loc">District 7 · 13 min</span>
+          <span class="loc">District 7 · 13 min by car</span>
           <p class="desc">Premier mall in District 7, over 200 stores across six levels including Uniqlo, H&amp;M and Mango, a food court and a CGV cinema. Lakeside setting, a relaxing trip if you're out that way.</p>
         </div>
       </div>
     </details>
 
     <details>
-      <summary>Supermarkets &amp; groceries <span class="sub">1 to 25 min</span></summary>
+      <summary>Supermarkets &amp; groceries <span class="sub">Nearby &amp; around the city</span></summary>
       <div class="body">
         <div class="place">
           <span class="nm"><a href="https://www.google.com/maps/search/?api=1&query=Annam%20Gourmet%2C%2016%20to%2018%20Hai%20B%C3%A0%20Tr%C6%B0ng%2C%20District%201%2C%20Ho%20Chi%20Minh%20City" target="_blank" rel="noopener">Annam Gourmet</a></span>
-          <span class="loc">16 to 18 Hai Bà Trưng, District 1 · 6 min</span>
+          <span class="loc">16 to 18 Hai Bà Trưng, District 1 · 6 min by car</span>
           <p class="desc">The best imported and gourmet grocer in the city. European cheese, charcuterie, olive oil, proper bread, wine, Western pantry staples. Expensive by local standards, but it's where you go when you want familiar ingredients. Open 7am to 9pm. There's a smaller branch in the basement of Saigon Centre.</p>
         </div>
         <div class="place">
           <span class="nm"><a href="https://www.google.com/maps/search/?api=1&query=Emart%2C%20Thiso%20Mall%20Sala%2C%2010%20Mai%20Ch%C3%AD%20Th%E1%BB%8D%2C%20Th%E1%BB%A7%20%C4%90%E1%BB%A9c%2C%20Ho%20Chi%20Minh%20City" target="_blank" rel="noopener">Emart, Thiso Mall Sala</a></span>
-          <span class="loc">10 Mai Chí Thọ, Thủ Đức · 9 min</span>
+          <span class="loc">10 Mai Chí Thọ, Thủ Đức · 9 min by car</span>
           <p class="desc">Enormous Korean hypermarket with an excellent food court attached. Strong on Korean and Japanese products, fresh seafood and household goods. Open 7:30am to 10:30pm.</p>
         </div>
         <div class="place">
           <span class="nm"><a href="https://www.google.com/maps/search/?api=1&query=Lotte%20Mart%20District%207%2C%20469%20Nguy%E1%BB%85n%20H%E1%BB%AFu%20Th%E1%BB%8D%2C%20District%207%2C%20Ho%20Chi%20Minh%20City" target="_blank" rel="noopener">Lotte Mart District 7</a></span>
-          <span class="loc">469 Nguyễn Hữu Thọ, District 7 · 9 min</span>
+          <span class="loc">469 Nguyễn Hữu Thọ, District 7 · 9 min by car</span>
           <p class="desc">Big Korean hypermarket with a cinema and kids' zone attached. A good one stop trip if you're stocking up properly or buying gifts to take home. Open 7:30am to 10pm.</p>
         </div>
         <div class="place">
           <span class="nm"><a href="https://www.google.com/maps/search/?api=1&query=AEON%20Mall%2C%20Nguy%E1%BB%85n%20V%C4%83n%20Linh%2C%20B%C3%ACnh%20T%C3%A2n%2C%20Ho%20Chi%20Minh%20City" target="_blank" rel="noopener">AEON Mall, Nguyễn Văn Linh</a></span>
-          <span class="loc">Bình Tân · 25 min</span>
+          <span class="loc">Bình Tân · 25 min by car</span>
           <p class="desc">Japanese hypermarket and mall, roughly 4,200 square metres of groceries, ready to eat meals and a food court with Japanese, Vietnamese and Korean options. The furthest of these, but the widest Japanese product range in the city.</p>
         </div>
         <div class="note"><b>Nearest to you:</b> 7-Eleven, GS25 and WINMart, right in the Rivergate lobby. All listed in Your Street above.</div>
@@ -941,7 +993,7 @@ footer .sig{font-family:'DM Serif Display',serif;font-size:19px;color:var(--ink)
   <!-- ============ HEALTH ============ -->
   <section id="health">
     <p class="eyebrow">If something goes wrong</p>
-    <h2>Feeling unwell or hurt?</h2>
+    <h2>Pharmacy &amp; medical help</h2>
     <p class="lede">Tell us too, so we can help you get sorted.</p>
 
     <div class="card">
@@ -959,7 +1011,7 @@ footer .sig{font-family:'DM Serif Display',serif;font-size:19px;color:var(--ink)
   <!-- ============ FITNESS ============ -->
   <section id="fitness">
     <p class="eyebrow">Training</p>
-    <h2>Gyms &amp; combat sports</h2>
+    <h2>Gyms &amp; fitness</h2>
 
     <div class="card">
       <h3><a href="https://www.google.com/maps/search/?api=1&query=Citigym%2C%20Saigon%20Royale%2C%20District%204%2C%20Ho%20Chi%20Minh%20City" target="_blank" rel="noopener">Citigym, District 4</a></h3>
@@ -981,9 +1033,9 @@ footer .sig{font-family:'DM Serif Display',serif;font-size:19px;color:var(--ink)
   <!-- ============ PRACTICAL ============ -->
   <section id="practical">
     <p class="eyebrow">Useful</p>
-    <h2>Practical bits</h2>
+    <h2>Useful nearby</h2>
 
-    <details>
+    <details id="atm">
       <summary>ATM <span class="sub">Around the block</span></summary>
       <div class="body">
         <p>There's an ATM around the block, near Volkswagen Khánh Hội on the way to McDonald's. Withdrawal limit is roughly <b>2,000,000 VND</b> per transaction, though this can vary by bank.</p>
@@ -994,7 +1046,7 @@ footer .sig{font-family:'DM Serif Display',serif;font-size:19px;color:var(--ink)
       </div>
     </details>
 
-    <details>
+    <details id="money">
       <summary>Changing money <span class="sub">2 options</span></summary>
       <div class="body">
         <p>Gold shops and dedicated exchange counters give noticeably better rates than the airport or hotels, and they are quick. Two we send guests to:</p>
@@ -1006,7 +1058,7 @@ footer .sig{font-family:'DM Serif Display',serif;font-size:19px;color:var(--ink)
       </div>
     </details>
 
-    <details>
+    <details id="sim">
       <summary>SIM cards &amp; eSIM <span class="sub">2 options</span></summary>
       <div class="body">
         <p>Need data the moment you land? 7-Eleven sells eSIM top ups if your phone supports it, the quickest fix. Want a physical SIM instead? There's a VNPT shop on the corner near the Honda dealer, roughly 5 to 10 minutes on foot.</p>
@@ -1017,7 +1069,7 @@ footer .sig{font-family:'DM Serif Display',serif;font-size:19px;color:var(--ink)
       </div>
     </details>
 
-    <details>
+    <details id="spa">
       <summary>Spa &amp; massage <span class="sub">Nearby</span></summary>
       <div class="body">
         <p>A reliable spot nearby for a massage after a day of walking. Book ahead in the evening; walk ins often wait.</p>
@@ -1025,7 +1077,7 @@ footer .sig{font-family:'DM Serif Display',serif;font-size:19px;color:var(--ink)
       </div>
     </details>
 
-    <details open>
+    <details id="local-tips">
       <summary>Good to know <span class="sub">First time here?</span></summary>
       <div class="body">
         <ul class="rules">
@@ -1114,6 +1166,46 @@ const CONFIG = {
   href("spaLink", CONFIG.spaUrl);
   href("fx1", CONFIG.exchange1);
   href("fx2", CONFIG.exchange2);
+
+
+  const menu = document.getElementById("guide-menu");
+  const menuSummary = menu.querySelector("summary");
+  menu.addEventListener("toggle", () => {
+    if (menu.open) menu.closest("nav").scrollIntoView({block:"start"});
+  });
+  const closeMenu = () => { menu.open = false; };
+  const revealTarget = (hash) => {
+    const target = document.getElementById(hash.slice(1));
+    if (!target) return;
+    for (let node = target; node; node = node.parentElement) {
+      if (node.tagName === "DETAILS") node.open = true;
+    }
+    requestAnimationFrame(() => target.scrollIntoView({block:"start"}));
+  };
+  document.querySelectorAll('a[href^="#"]').forEach(link => {
+    if (link.getAttribute("href") === "#") return;
+    link.addEventListener("click", () => {
+      closeMenu();
+      revealTarget(link.hash);
+      if (link.closest(".guide-nav")) {
+        const target = document.getElementById(link.hash.slice(1));
+        if (target) {
+          const focus = target.matches("details") ? target.querySelector("summary") : target;
+          if (!focus.matches("summary")) focus.setAttribute("tabindex", "-1");
+          focus.focus({preventScroll:true});
+        }
+      }
+    });
+  });
+  document.getElementById("close-menu").addEventListener("click", () => {closeMenu();menuSummary.focus();});
+  document.addEventListener("keydown", event => {
+    if (event.key === "Escape" && menu.open) {closeMenu();menuSummary.focus();}
+  });
+  document.addEventListener("click", event => {
+    if (menu.open && !menu.contains(event.target)) closeMenu();
+  });
+  window.addEventListener("hashchange", () => revealTarget(location.hash));
+  if (location.hash) revealTarget(location.hash);
 
   document.querySelectorAll("[data-copy]").forEach(btn => {
     btn.addEventListener("click", async () => {

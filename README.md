@@ -6,11 +6,9 @@
 - `CNAME` — points GitHub Pages at `rivergate.veluxestay.com`
 
 ## Deploy status
-Repo created and pushed. Still needed on the GitHub/DNS side:
-1. Settings → Pages → Deploy from main / root
-2. Settings → Pages → confirm custom domain is `rivergate.veluxestay.com` (should auto-fill from the CNAME file)
-3. GoDaddy DNS → CNAME record: Name `rivergate`, Value `veluxegroupvn.github.io`
-4. Once the cert provisions, check "Enforce HTTPS" in Settings → Pages
+Published at https://rivergate.veluxestay.com through the `veluxegroupvn/rivergate-guide` GitHub repository, using `main` and the repository root.
+
+The navigation redesign dated 2026-10-01 is included in main. GitHub Pages publishes changes automatically after a successful push.
 
 ## To edit
 Open `index.html`, search for `const CONFIG` near the bottom. wifiName, hostPhone,
@@ -33,5 +31,14 @@ Fees follow the internal SOP (Google Doc), not the printed card, where the two
 ever disagree. Same policy as the SOHO guide — not re-verified for Rivergate specifically.
 
 ## Still to build
-- Tresor guide (copy this file, edit CONFIG + the two BUILDING-SPECIFIC blocks)
 - Printed card redesign to match the SOP's late check-out numbers
+
+## Navigation redesign, 2026-10-01
+
+The opening shows WiFi, the driver address, stay times and host contact. A sticky “Find something” menu replaces the 13 card contents grid. Six groups provide short descriptions and direct links to individual answers. Links open the relevant accordion automatically, including when a guest opens a URL with a fragment. Escape closes the menu.
+
+Luggage has its own answer and retains the property's existing policy. Rubbish photos are preserved and shown on request. Nearby food and Grab delivery appear first in the food section. Attraction and mall durations explicitly say “by car”. All other local durations retain each building's own starting point.
+
+Browser validation covers all three guides at widths of 320, 390, 430, 768 and 1280 pixels, all 29 unique menu destinations, keyboard dismissal, copy buttons, photo preservation and existing extras and late check out prices.
+
+Rivergate retains its 15 minute walking labels for Phở SOL and Eatlah. The separate Google Maps checks showed 14 and 13 minutes on the shortest routes, with 15 minute alternatives. Tresor's shorter times are not shared with this guide.
